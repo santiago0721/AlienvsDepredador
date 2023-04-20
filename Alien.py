@@ -8,6 +8,8 @@ class Alien:
 
     def iniciar_partida(self,nodo:Node):
         self.posicion = nodo
+        if self.comprobar_bloqueo(nodo):
+            return True
         if self.posDepredador(nodo):
             self.posicion.valor = "😡" + self.personaje
         else:
@@ -29,6 +31,10 @@ class Alien:
         if pos.valor == "😡":
             self.vida -= 25
             return True
+    def comprobar_bloqueo(self,pos:Node):
+        if pos.valor == "[#]":
+            return True
+        return False
     def poscompartida(self):
         if self.posicion.valor == "😡"+ self.personaje:
             self.posicion.valor = "😡"
@@ -37,7 +43,7 @@ class Alien:
 
     def movimiento_der(self):
         aux = self.posicion.der
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -51,7 +57,7 @@ class Alien:
 
     def movimiento_izq(self):
         aux = self.posicion.izq
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -65,7 +71,7 @@ class Alien:
 
     def movimiento_top(self):
         aux = self.posicion.top
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -80,7 +86,7 @@ class Alien:
 
     def movimiento_abajo(self):
         aux = self.posicion.abajo
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -96,21 +102,45 @@ class Alien:
     def disminuir_vida(self):
         self.vida -= 25
 
+    def atacar_diagonal(self, enemigo):
 
+        try:
+            if self.posicion.izq.top.valor == enemigo:
+                return True
+        except:
+            pass
+        try:
+            if self.posicion.izq.abajo.valor == enemigo:
+                return True
+        except:
+            pass
+        try:
+            if self.posicion.der.top.valor == enemigo:
+                return True
+        except:
+            pass
+        try:
+            if self.posicion.der.abajo.valor == enemigo:
+                return True
+        except:
+            pass
+        return False
     def atacar_si(self):
         enemigo = "😡"
-        if not self.posicion.der is None:
+        if not (self.posicion.der is None):
             if (self.posicion.der.valor == enemigo):
                 return True
-        elif not (self.posicion.izq is None):
+        if not (self.posicion.izq is None):
             if self.posicion.izq.valor == enemigo:
                 return True
-        elif not (self.posicion.top is None):
+        if not (self.posicion.top is None):
             if self.posicion.top.valor == enemigo:
                 return True
-        elif not (self.posicion.abajo is None):
+        if not (self.posicion.abajo is None):
             if self.posicion.abajo.valor == enemigo:
                 return True
+        if self.atacar_diagonal(enemigo) == True:
+            return True
         else:
             return False
     def atacar(self):

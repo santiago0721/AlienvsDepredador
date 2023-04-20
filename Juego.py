@@ -34,7 +34,9 @@ class juego:
         try:
             fila = int(input("Ingrese el número de la fila:\n"))
             columna = int(input("Ingrese el número de la columna:\n"))
-            self.alien.iniciar_partida(self.tablero.buscar_nodo(fila, columna))
+            if self.alien.iniciar_partida(self.tablero.buscar_nodo(fila, columna)):
+                print("no se puede hacer este movimiento por bloqueo")
+                self.inicio_alien()
             self.puntuacion()
             self.tablero.mostrar()
 
@@ -60,6 +62,15 @@ class juego:
                 if nodo.valor == "[ ]":
                     nodo.valor = "[+]"
                     break
+    def inicio_bloqueo(self):
+        for i in range(self.tamano//2):
+            while True:
+                fila = random.randint(0, self.tamano - 1)
+                columna = random.randint(0, self.tamano - 1)
+                nodo = self.tablero.buscar_nodo(fila, columna)
+                if nodo.valor == "[ ]":
+                    nodo.valor = "[#]"
+                    break
 
     def inicio_puntos_menos(self):
         for i in range(self.tamano):
@@ -74,6 +85,7 @@ class juego:
     def inicio_puntos(self):
         self.inicio_puntos_mas()
         self.inicio_puntos_menos()
+        self.inicio_bloqueo()
 
     def puntuacion(self):
         print(f"Alien: {self.alien.vida}------- depredador: {self.depredador.vida}")
@@ -89,7 +101,7 @@ class juego:
                     aux = self.depredador.movimiento_aleatorio()
                     if aux is None:
                         break
-                    elif aux is False:
+                    if aux is False:
                         print(" GANADOR ALIEN !!")
                         stop = False
                         break

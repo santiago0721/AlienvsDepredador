@@ -27,6 +27,11 @@ class Depredador:
     def posAlien(self,pos):
         if pos.valor == "👽":
             return True
+
+    def comprobar_bloqueo(self,pos:Node):
+        if pos.valor == "[#]":
+            return True
+        return False
     def poscompartida(self):
         if self.posicion.valor == self.personaje + "👽":
             self.posicion.valor = "👽"
@@ -35,7 +40,7 @@ class Depredador:
 
     def movimiento_top(self):
         aux = self.posicion.top
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -50,7 +55,7 @@ class Depredador:
 
     def movimiento_abajo(self):
         aux = self.posicion.abajo
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -65,7 +70,7 @@ class Depredador:
 
     def movimiento_der(self):
         aux = self.posicion.der
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -80,7 +85,7 @@ class Depredador:
 
     def movimiento_izq(self):
         aux = self.posicion.izq
-        if aux is None:
+        if aux is None or self.comprobar_bloqueo(aux) is True:
             return True
         self.puntos_vida(aux)
         self.poscompartida()
@@ -96,7 +101,7 @@ class Depredador:
     def movimiento_diagonal1(self):     #izq-top
         try:
             aux = self.posicion.izq.top
-            if aux is None:
+            if aux is None or self.comprobar_bloqueo(aux) is True:
                 return True
             self.puntos_vida(aux)
             self.poscompartida()
@@ -114,7 +119,7 @@ class Depredador:
     def movimiento_diagonal2(self):     #der-top
         try:
             aux = self.posicion.der.top
-            if aux is None:
+            if aux is None or self.comprobar_bloqueo(aux) is True:
                 return True
             self.puntos_vida(aux)
             self.poscompartida()
@@ -132,7 +137,7 @@ class Depredador:
     def movimiento_diagonal3(self):   #izq-abajo
         try:
             aux = self.posicion.izq.abajo
-            if aux is None:
+            if aux is None or self.comprobar_bloqueo(aux) is True:
                 return True
             self.puntos_vida(aux)
             self.poscompartida()
@@ -150,7 +155,7 @@ class Depredador:
     def movimiento_diagonal4(self):  #der-abajo
         try:
             aux = self.posicion.der.abajo
-            if aux is None:
+            if aux is None or self.comprobar_bloqueo(aux) is True:
                 return True
             self.puntos_vida(aux)
             self.poscompartida()
