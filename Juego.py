@@ -117,5 +117,8 @@ class juego:
             print(" GANADOR depredador !!")
             return False
 
+        if resultado == "atacar":
+            self.depredador.disminuir_vida()
+
 
 

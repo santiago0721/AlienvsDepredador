@@ -96,12 +96,27 @@ class Alien:
     def disminuir_vida(self):
         self.vida -= 25
 
+
+    def atacar_si(self):
+        enemigo = "😡"
+        if not self.posicion.der is None:
+            if (self.posicion.der.valor == enemigo):
+                return True
+        elif not (self.posicion.izq is None):
+            if self.posicion.izq.valor == enemigo:
+                return True
+        elif not (self.posicion.top is None):
+            if self.posicion.top.valor == enemigo:
+                return True
+        elif not (self.posicion.abajo is None):
+            if self.posicion.abajo.valor == enemigo:
+                return True
+        else:
+            return False
     def atacar(self):
-        pass
+        return "atacar"
 
-
-    def menu(self):
-
+    def menu_opcion1(self):
         while True:
             print("""
             [1] derecha\n
@@ -122,8 +137,33 @@ class Alien:
                 return self.movimiento_abajo()
             else:
                 print("esta no es una opcion valida, ingrese un numero permitido")
+    def menu_opcion2(self):
+        while True:
+            print("""
+                    [1] derecha\n
+                    [2] izquierda\n
+                    [3] top\n
+                    [4] abajo\n
+                    [5] Atacar\n
+                    """)
 
+            x = input("ingrese el numero de la opcion que desea ")
 
+            if x == "1":
+                return self.movimiento_der()
+            elif x == "2":
+                return self.movimiento_izq()
+            elif x == "3":
+                return self.movimiento_top()
+            elif x == "4":
+                return self.movimiento_abajo()
+            elif x == "5":
+                return self.atacar()
+            else:
+                print("esta no es una opcion valida, ingrese un numero permitido")
 
-
-
+    def menu(self):
+        if self.atacar_si():
+            return self.menu_opcion2()
+        else:
+            return self.menu_opcion1()
